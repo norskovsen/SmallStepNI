@@ -3,7 +3,13 @@
 *.aux
 *.v.d
 *.bak
+*.vok
+*.vos
+.Makefile.coq.d
+.lia.cache
+*~
 Makefile.coq
+Makefile.coq.conf
 doc
 doc_preprocess
 .DS_Store

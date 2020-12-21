@@ -5,9 +5,6 @@ Set Implicit Arguments.
 
 Require Import Identifier Environment Imperative Types Augmented.
 
-
-
-
 Inductive low_event : typenv -> level -> event -> Prop :=
 | low_assigment_is_low_event:
     forall Γ ℓ ℓ' x u,
@@ -20,14 +17,13 @@ Definition high_event Γ ℓ evt := ~low_event Γ ℓ evt.
 
 Definition low_event_step  Γ ℓ evt cfg cfg' :=
   event_step Γ evt cfg cfg' /\ low_event Γ ℓ evt.
+
 Definition high_event_step Γ ℓ evt cfg cfg' :=
   event_step Γ evt cfg cfg' /\ high_event Γ ℓ evt.
-
 
 Hint Unfold high_event.
 Hint Unfold high_event_step.
 Hint Unfold low_event_step.
-
 
 Definition event_low_eq Γ ev1 ev2 :=
      (low_event Γ Low ev1 <-> low_event Γ Low ev2)

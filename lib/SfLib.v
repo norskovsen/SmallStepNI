@@ -20,7 +20,10 @@ Require Export Arith.EqNat.  (* Contains [beq_nat], among other things *)
 
 Definition admit {T: Type} : T.  Admitted.
 
-Require String. Open Scope string_scope.
+(* Require String. Open Scope string_scope. *)
+From Coq Require String.
+Export String.StringSyntax.  (* [Export] means to [Import] the StringSyntax module, but also make it automatically available to whoever imports this file as well. *)
+Open Scope string_scope.
 
 Ltac move_to_top x :=
   match reverse goal with
@@ -159,7 +162,7 @@ Inductive multi (X:Type) (R: relation X)
                     R x y ->
                     multi X R y z ->
                     multi X R x z.
-Implicit Arguments multi [[X]]. 
+Arguments multi {X}. 
 
 Tactic Notation "multi_cases" tactic(first) ident(c) :=
   first;
