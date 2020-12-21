@@ -15,10 +15,10 @@ Lemma eq_level_dec: forall l1 l2: level, {l1 = l2} + { l1<>l2 }.
 Proof.
   decide equality.
 Qed.
-Hint Resolve eq_level_dec.
+Hint Resolve eq_level_dec : core.
 
-Hint Resolve eq_exp_dec.
-Hint Resolve eq_id_dec.
+Hint Resolve eq_exp_dec : core.
+Hint Resolve eq_id_dec : core.
 
 Tactic Notation "level_cases" tactic (first) ident (c):=
   first;
@@ -27,7 +27,7 @@ Tactic Notation "level_cases" tactic (first) ident (c):=
 Inductive flowsto: level -> level -> Prop :=
   | flowsto_sym: forall ℓ, flowsto ℓ ℓ
   | flowsto_ord: flowsto Low High.
-Hint Constructors flowsto.
+Hint Constructors flowsto : core.
 
 Notation "ℓ '⊑' ℓ'" := (flowsto ℓ ℓ') (at level 35).
 
@@ -107,5 +107,5 @@ Proof.
     congruence.
 Qed.
 
-Hint Resolve wt_programs_are_not_stop.
+Hint Resolve wt_programs_are_not_stop : core.
 

@@ -15,7 +15,7 @@ Proof.
   decide equality.
   apply eq_nat_dec.
 Qed.
-Hint Resolve eq_event_dec.
+Hint Resolve eq_event_dec : core.
 
 (* Instrumented semantics. We decorate the semantic transition with
    events. Events may correspond to either assignments, program

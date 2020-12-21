@@ -55,15 +55,15 @@ Definition wt_cfg (cfg: config) ( Γ: typenv) (pc: level): Prop :=
   match cfg with
     | Config c m => wf_mem m Γ /\ ( c <> STOP -> -{ Γ, pc ⊢ c }- )
   end.
-Hint Unfold wt_cfg.
+Hint Unfold wt_cfg : core.
      
 Notation  "'={' Γ ',' pc '⊢' cfg '}='" := 
   (wt_cfg cfg Γ pc ) (at level 40).
 
-Local Hint Resolve eq_nat_dec.
+Local Hint Resolve eq_nat_dec : core.
 
 (* TODO : move this hint someplace else *) 
-Hint Extern 4 (_ <> STOP) => let X:= fresh in unfolds; intros X; inverts X. 
+Hint Extern 4 (_ <> STOP) => let X:= fresh in unfolds; intros X; inverts X : core.
 
 Theorem preservation_cfg:
   forall Γ pc cfg cfg',
@@ -166,7 +166,7 @@ Proof.
 
 Qed.    
 
-Hint Rewrite event_step_inversion.
+Hint Rewrite event_step_inversion : core.
 
 Lemma preservation_evt_cfg:
   forall Γ evt pc cfg cfg',

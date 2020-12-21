@@ -6,7 +6,7 @@ Created: 2016-07-26
 
 *)
 
-Require Import Bool Arith List CpdtTactics SfLib LibTactics Omega.
+Require Import Bool Arith List CpdtTactics SfLib LibTactics Lia.
 Require Import Coq.Program.Equality.
 
 Set Implicit Arguments.
@@ -116,7 +116,7 @@ Lemma is_stop_trivial : forall m, is_stop 〈STOP, m 〉.
               constructor.
             Qed.
 
-Hint Resolve is_stop_trivial.
+Hint Resolve is_stop_trivial : core.
 
 
 
@@ -136,7 +136,7 @@ Lemma is_not_stop_config_inversion:
   auto.
 Qed.
 
-Hint Resolve is_not_stop_config_inversion.
+Hint Resolve is_not_stop_config_inversion : core.
 
 
 Lemma is_stop_config_inversion:
@@ -150,7 +150,7 @@ Lemma is_stop_config_inversion:
 
 Qed.
 
-Hint Resolve is_stop_config_inversion.
+Hint Resolve is_stop_config_inversion : core.
 
 
 Lemma empty_event_is_high :
@@ -162,7 +162,7 @@ Proof.
   match goal with [H : context [low_event] |- _ ] => inverts H end.
 Qed.
 
-Hint Resolve empty_event_is_high.
+Hint Resolve empty_event_is_high : core.
 
 
 
@@ -172,10 +172,10 @@ Lemma bridge_steps_are_nonneg:
            〈 c, m 〉 ⇨+/(SL, Γ, ev, n) cfg ->
            n >= 0.
          Proof.
-           intros; inverts * H; omega.
+           intros; inverts * H; lia.
 Qed.
 
-Hint Resolve bridge_steps_are_nonneg.
+Hint Resolve bridge_steps_are_nonneg : core.
 
 
 Lemma is_non_stop_config_trivial:
@@ -191,7 +191,7 @@ Proof.
          subst.
          tauto.
        Qed.
-Hint Resolve is_non_stop_config_trivial.
+Hint Resolve is_non_stop_config_trivial : core.
 
 
 Lemma multi_stop_trivial:
@@ -203,7 +203,7 @@ Proof.
   inverts* H.
   inverts H0.
 Qed.
-Hint Resolve multi_stop_trivial.
+Hint Resolve multi_stop_trivial : core.
 
 
 Lemma multi_idx_stop_trivial:
@@ -215,7 +215,7 @@ Proof.
   inverts* H.
   inversion H0.
 Qed.
-Hint Resolve multi_idx_stop_trivial.
+Hint Resolve multi_idx_stop_trivial : core.
 
 Lemma high_assignments_are_high_events:
   forall Γ x u,
@@ -228,7 +228,7 @@ Proof.
   subst.
   impossible_flows.
 Qed.
-Hint Resolve high_assignments_are_high_events.
+Hint Resolve high_assignments_are_high_events : core.
 
 
 
@@ -246,7 +246,7 @@ Proof.
   stop_contradiction_more.
 Qed.
 
-Hint Resolve stop_contradiction_more_lemma.
+Hint Resolve stop_contradiction_more_lemma : core.
 
 
 Ltac stop_contradiction_alt :=
@@ -269,7 +269,7 @@ Proof.
   stop_contradiction_alt.
 Qed.
 
-Hint Resolve stop_contradiction_alt_lemma_exf.
+Hint Resolve stop_contradiction_alt_lemma_exf : core.
 
 Ltac invert_step:=
   match goal with [H : context[step] |- _ ] => inverts H end.

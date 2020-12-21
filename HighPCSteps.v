@@ -8,7 +8,7 @@
 
 Require Import Bool Arith List CpdtTactics SfLib LibTactics.
 Require Import Coq.Program.Equality.
-Require Import Omega.
+Require Import Lia.
 
 Set Implicit Arguments.
 

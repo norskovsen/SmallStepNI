@@ -52,8 +52,6 @@ Require Import List.
   Lemma test : forall b, b = false.
   time eauto 7. (* takes over 4 seconds  to fail! *) *)
 
-Remove Hints Bool.trans_eq_bool.
-
 
 (* ********************************************************************** *)
 (** * Tools for programming with Ltac *)
@@ -96,6 +94,8 @@ Inductive ltac_No_arg : Set :=
 
 Inductive ltac_Wild : Set :=
   | ltac_wild : ltac_Wild.
+
+Declare Scope ltac_scope.
 
 Notation "'__'" := ltac_wild : ltac_scope.
 
@@ -578,7 +578,7 @@ Tactic Notation "protects" constr(E) "do" tactic(Tac) "/" :=
 
 Definition eq' := @eq.
 
-Hint Unfold eq'.
+Hint Unfold eq' : core.
 
 Notation "x '='' y" := (@eq' _ x y)
   (at level 70, y at next level).
@@ -3135,14 +3135,14 @@ Tactic Notation "induction_wf" ":" constr(E) ident(X) :=
     judgment that includes a counter for the maximal height
     (see LibTacticsDemos for an example) *)
 
-Require Import Compare_dec Omega.
+Require Import Compare_dec Lia.
 
 Lemma induct_height_max2 : forall n1 n2 : nat,
   exists n, n1 < n /\ n2 < n.
 Proof using.
   intros. destruct (lt_dec n1 n2).
-  exists (S n2). omega.
-  exists (S n1). omega.
+  exists (S n2). lia.
+  exists (S n1). lia.
 Qed.
 
 Ltac induct_height_step x :=
@@ -4992,6 +4992,8 @@ Notation "'exists' x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 ',' P" :=
 (** Definition of ['let] *)
 
 Definition let_binding (A B:Type) (v:A) (K:A->B) := K v.
+
+Declare Scope let_scope.
 
 Notation "''let' x ':=' v 'in' e" := (let_binding v (fun x => e))
   (at level 69, x ident, right associativity,

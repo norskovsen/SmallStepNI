@@ -198,7 +198,7 @@ Proof.
   inversion H.
   apply state_low_eq_; auto.
   
-  Focus 3.
+  3:
 
   {
     intros.
@@ -231,7 +231,6 @@ Proof.
     
   }
 
-  Unfocus.
   {
     subst.
     unfold wf_mem in *.
@@ -317,4 +316,4 @@ Definition config_low_eq (Γ:typenv) cfg cfg' :=
     | Config c m, Config c' m' => c = c' /\ state_low_eq Γ m m'
   end.
 
-Hint Unfold config_low_eq.
+Hint Unfold config_low_eq : core.

@@ -14,7 +14,7 @@ Created: 2016-07-27
 
 Require Import Bool Arith List CpdtTactics SfLib LibTactics.
 Require Import Coq.Program.Equality.
-Require Import Omega.
+Require Import Lia.
 
 Set Implicit Arguments.
 
@@ -157,7 +157,7 @@ Proof.
       * clear IHn.
         lets : multi_idx_stop_trivial H_n; subst.
         (exists*〈STOP, m_end 〉0).
-        splits~ ; try omega.
+        splits~ ; try lia.
         applys~ bridge_low_num.
 
       * specializes~ H_wt' __ .
@@ -176,7 +176,7 @@ Proof.
       compare c' STOP; intros; subst.
       - (exists ev 0 〈STOP, m' 〉 0).
         lets : multi_idx_stop_trivial H_n; subst.
-        splits~ ; try omega.
+        splits~ ; try lia.
         applys*  bridge_stop_num.
         
         
@@ -187,7 +187,7 @@ Proof.
 
         lets (?ev' & ?n' &  ?cfg' & k & ?H_bridge & ?H_tail & ?H_k ): IHH_multi.
         exists ev' (S n') cfg' k.
-        splits~ ; try omega.
+        splits~ ; try lia.
         applys* bridge_trans_num.
     }
 
