@@ -30,7 +30,6 @@ Definition event_low_eq Γ ev1 ev2 :=
       /\  (low_event Γ Low ev1 -> ev1 = ev2).
 Hint Unfold event_low_eq.
 
-
 Inductive bridge_step_num:
   typenv -> level -> config -> config -> event -> nat -> Prop :=
 | bridge_low_num:
@@ -49,27 +48,17 @@ Inductive bridge_step_num:
       bridge_step_num Γ ℓ  cfg' cfg'' evt''  n ->
       bridge_step_num Γ ℓ  cfg cfg'' evt'' (S n).
 
-
-
-
 Tactic Notation "bridge_num_cases" tactic(first) ident(c) :=
   first;
   [ Case_aux c "bridge_low_num" | Case_aux c "bridge_stop_num" | Case_aux c "bridge_trans_num" ].
 
-
 Notation " t '⇨+/(SL,' Γ ',' obs ',' n ')'  t' " :=
   (bridge_step_num Γ Low t t' obs n) (at level 40).
-
-
-
 
 Notation " t '↷' '(' Γ ',' obs ',' n ')'  t' " :=
   (bridge_step_num Γ Low t t' obs n) (at level 40).
 
-
-
 (* Multi-step reduction *)
-
 Inductive multi {X:Type} (R: relation X): relation X :=
    | multi_refl : forall (x : X), multi R x x
    | multi_step : forall (x y z : X),
@@ -78,11 +67,9 @@ Inductive multi {X:Type} (R: relation X): relation X :=
          multi R x z.
 Hint Resolve multi_refl.
 
-
 Tactic Notation "multi_cases" tactic(first) ident(c) :=
   first;
   [ Case_aux c "multi_refl" | Case_aux c "multi_step" ].
-
 
 Theorem multi_R : forall (X:Type) (R:relation X) (x y : X),
        R x y -> (multi R) x y.
@@ -105,19 +92,11 @@ Proof.
 
 Qed.
 
-
-
-
-
 (* Multi-step transitions *)
 Definition multistep := multi step.
 Notation " t '⇒*' t' " := (multistep t t') (at level 40).
 
-
-
-
 (* Indexed multi relation *)
-
 Definition relation_idx := fun X : Type => X -> X -> nat -> Prop.
 
 Inductive multi_idx {X:Type} (R: relation X) :relation_idx X :=
@@ -127,15 +106,11 @@ Inductive multi_idx {X:Type} (R: relation X) :relation_idx X :=
                          multi_idx R y z n ->
                          multi_idx R x z (S n).
 
-
 Hint Resolve multi_refl_zero.
-
 
 Tactic Notation "multi_idx_cases" tactic(first) ident(c) :=
   first;
   [ Case_aux c "multi_refl_zero" | Case_aux c "multi_step_more" ].
-
-
 
 (* Indexed multi-step transitions *)
 Definition multistep_idx := multi_idx step.
@@ -143,7 +118,6 @@ Notation " t '⇒/+' n '+/' s" := (multi_idx step t s n) (at level 40).
 
 
 (* A pair of sanity check theorems; we don't really use them *)
-
 Theorem multi_idx_R:
   forall (X:Type) (R: relation X) ( x y : X),
     R x y -> (multi_idx R) x y 1.
@@ -151,8 +125,6 @@ Proof.
   intros.
   eapply multi_step_more; eauto.
 Qed.
-
-
 
 Theorem multi_idx_trans:
   forall n (X: Type) (R: relation X) ( x y z: X ) m,

@@ -1,12 +1,9 @@
 Require Import Bool Arith List CpdtTactics SfLib LibTactics.
 Require Import Coq.Program.Equality.
 
-
 Set Implicit Arguments.
 
-
 Require Import Identifier Environment.
-
 
 Definition state := @Env nat.
 Definition update_st := @update_env nat.
@@ -16,6 +13,7 @@ Inductive exp: Type :=
 | ENum : nat -> exp
 | EId  : id  -> exp
 | EPlus: exp -> exp -> exp.
+
 Lemma eq_exp_dec: forall e1 e2: exp, {e1 = e2} + {e1 <> e2}.
 Proof.
   decide equality.
@@ -30,7 +28,6 @@ Tactic Notation "exp_cases" tactic (first) ident (c) :=
  first;
  [Case_aux c "ENum" | Case_aux c "EId" | Case_aux c "EPlus" ].
 
-
 Inductive eval : exp -> state -> nat -> Prop:=
    | eval_const : forall n st, eval (ENum n) st n
    | eval_var: forall x st u,
@@ -41,10 +38,10 @@ Inductive eval : exp -> state -> nat -> Prop:=
         eval e2 st v ->
         z = u + v ->
         eval (EPlus e1 e2) st z.
+
 Tactic Notation "eval_cases" tactic (first) ident (c) :=
  first;
  [Case_aux c "eval_const" | Case_aux c "eval_var" | Case_aux c "eval_plus" ].
-
 
 Lemma eval_const_aux : forall st n u,
   eval (ENum n) st u -> u = n.
@@ -68,14 +65,12 @@ Theorem eval_is_det: forall e st u v,
 Proof.
   intros.
   generalize dependent v.
-
   eval_cases (induction H) Case.
      intros; inversion H0; crush.
      intros; inversion H0; crush.
      intros. inversion H2. crush.
 Qed.
 Hint Rewrite eval_is_det.
-
 
 Inductive cmd : Type :=
   | CStop : cmd
@@ -127,9 +122,6 @@ Definition is_stop cfg := cmd_of cfg = STOP.
 Hint Unfold is_stop.
 Definition is_not_stop cfg := cmd_of cfg <> STOP.
 Hint Unfold is_not_stop.
-
-
-
 
 Inductive step : config -> config -> Prop :=
   | step_skip : forall st,

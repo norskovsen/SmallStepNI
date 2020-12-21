@@ -1,43 +1,28 @@
 Require Import Bool Arith List CpdtTactics SfLib LibTactics.
 Require Import Coq.Program.Equality.
 
-
 Set Implicit Arguments.
-
 
 Require Import Identifier Environment.
 Require Import Imperative.
 
-
-
-
 (* Type system *)
-
 Inductive level :=
   | Low : level
   | High : level.
 
-
-
 Lemma eq_level_dec: forall l1 l2: level, {l1 = l2} + { l1<>l2 }.
 Proof.
-
-
   decide equality.
 Qed.
 Hint Resolve eq_level_dec.
 
-
-
 Hint Resolve eq_exp_dec.
 Hint Resolve eq_id_dec.
-
 
 Tactic Notation "level_cases" tactic (first) ident (c):=
   first;
   [Case_aux c "Low" | Case_aux c "High" ].
-
-
 
 Inductive flowsto: level -> level -> Prop :=
   | flowsto_sym: forall ℓ, flowsto ℓ ℓ
@@ -45,9 +30,6 @@ Inductive flowsto: level -> level -> Prop :=
 Hint Constructors flowsto.
 
 Notation "ℓ '⊑' ℓ'" := (flowsto ℓ ℓ') (at level 35).
-
-
-
 
 Definition typenv := @Env level.
 
@@ -68,19 +50,13 @@ Inductive exp_has_level : typenv -> exp -> level -> Prop :=
       {{ Γ ⊢ e : ℓ' }}
 where "'{{' Γ '⊢' e ':' ℓ '}}' " := (exp_has_level Γ e ℓ).
 
-
 Tactic Notation "exp_has_level_cases" tactic (first) ident (c) :=
  first;
  [Case_aux c "T_Const" | Case_aux c "T_Id" | Case_aux c "T_Plus"  | Case_aux c "T_Sub" ].
 
-
-
-
-
-
-
 (* Volpano-Smith simple typing *)
 Reserved Notation  "'-{' Γ ',' pc '⊢' c '}-'" (at level 0, Γ at level 55, pc at level 35).
+
 Inductive cmd_has_type : typenv -> level -> cmd -> Prop :=
  | T_Skip : forall Γ pc,
      -{ Γ, pc ⊢ SKIP }-
@@ -116,14 +92,10 @@ Tactic Notation "cmd_has_type_cases" tactic (first) ident (c) :=
    Case_aux c "T_Skip" | Case_aux c "T_Assign"  | Case_aux c "T_Seq"
  | Case_aux c "T_if" | Case_aux c "T_While" ].
 
-
 Lemma high_does_not_flow_to_low: ~ High ⊑ Low.
 Proof.
   crush; inversion H.
 Qed.
-
-
-
 
 Lemma wt_programs_are_not_stop:
   forall Γ pc c,

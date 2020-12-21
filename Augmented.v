@@ -1,19 +1,14 @@
 Require Import Bool Arith List CpdtTactics SfLib LibTactics.
 Require Import Coq.Program.Equality.
 
-
 Set Implicit Arguments.
-
 
 Require Import Identifier Environment.
 Require Import Imperative Types.
 
-
-
 Inductive event :=
   | EmptyEvent : event
   | AssignmentEvent : level -> id -> nat -> event.
-
 
 Lemma eq_event_dec: forall ev1 ev2: event, {ev1 = ev2} + { ev1<>ev2 }.
 Proof.
@@ -22,13 +17,9 @@ Proof.
 Qed.
 Hint Resolve eq_event_dec.
 
-
-
 (* Instrumented semantics. We decorate the semantic transition with
    events. Events may correspond to either assignments, program
    termination (stop) or transitionary (empty) events.  *)
-
-
 
 Inductive event_step : typenv -> event -> config ->  config -> Prop :=
   | event_step_assign:

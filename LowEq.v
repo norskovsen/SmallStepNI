@@ -5,13 +5,9 @@ Set Implicit Arguments.
 
 Require Import Identifier Environment Imperative WellFormedness UtilTactics Types.
 
-
-
 (* Low-equivalences  *)
 
-
 (* Value low-equivalence *)
-
 Inductive val_low_eq : level -> nat -> nat -> Prop :=
   | VLEqH : forall u v, val_low_eq High u v
   | VLEqL : forall u v, 
@@ -26,7 +22,6 @@ Proof.
   intros; inversion H; crush; constructor.
 Qed.
   
-
 Lemma val_low_eq_sym: 
    forall ℓ u v, 
      val_low_eq ℓ u v ->
@@ -62,12 +57,7 @@ Proof.
   destruct ℓ; constructor ;crush.
 Qed.
 
-
-
-
-
 (* Variable low-equivalence *)
-
 Inductive var_low_eq : typenv -> state -> state -> id -> Prop :=
 |  var_low_eq_: forall  Γ ℓ u v m1 m2 x, 
       Γ x =  Some ℓ ->
@@ -75,8 +65,6 @@ Inductive var_low_eq : typenv -> state -> state -> id -> Prop :=
       m2 x = Some v ->
       val_low_eq ℓ u v ->
       var_low_eq Γ m1 m2 x.
-
-
 
 Lemma var_low_eq_wf_refl:
   forall Γ m x ℓ,
@@ -93,8 +81,6 @@ Proof.
   apply val_low_eq_refl.
 Qed.
 
-
-
 Lemma var_low_eq_sym:
   forall Γ m s x, 
     var_low_eq Γ m s x ->
@@ -103,12 +89,9 @@ Proof.
   intros.
   inversion H;
     crush.
-  
   apply var_low_eq_ with (ℓ := ℓ) (u := v) (v := u); auto.
   apply val_low_eq_sym; auto.
-
 Qed.
-
 
 Lemma var_low_eq_wf_trans:
   forall Γ m x ℓ,
@@ -125,18 +108,13 @@ Proof.
   apply val_low_eq_refl.
 Qed.
 
-
-
-
 (* State low-equivalence *)
-
 Inductive state_low_eq : typenv -> state -> state -> Prop:=
 |  state_low_eq_ : forall Γ m1 m2,
        wf_mem m1 Γ ->
        wf_mem m2 Γ ->
        (forall x ℓ, Γ x = Some ℓ -> var_low_eq Γ m1 m2 x) ->
        state_low_eq Γ m1 m2.
-
 
 Lemma state_low_eq_sym: 
   forall Γ m s, 
@@ -152,10 +130,6 @@ Proof.
   apply var_low_eq_sym.
   auto.
 Qed.
-
-
-
-
   
 Lemma state_low_eq_trans:
   forall Γ m r s, 
@@ -164,9 +138,8 @@ Lemma state_low_eq_trans:
     state_low_eq Γ m s.
 Proof.
   intros.
-  inversion H; inversion  H0; subst;
+  inversion H; inversion H0; subst;
   remove_duplicate_hypothesis.
-  
   apply state_low_eq_; auto.
   intros.
   repeat specialize_gen.
@@ -176,7 +149,6 @@ Proof.
       | [ H: ?M ?x = Some ?U, H' : ?M ?x = Some ?V |- _ ]
           => assert (U = V) by (rewrite -> H in H'; crush); subst
   end.
-  
 
   match goal with 
       | [ H: Γ ?x = Some ?U, H' : Γ ?x = Some ?V |- _ ]
@@ -187,16 +159,10 @@ Proof.
   apply val_low_eq_sym_trans with (v := u0); auto.
 Qed.  
 
-
-
-  
-
-
 Lemma state_low_eq_wf_refl:
   forall Γ m, 
     wf_mem m Γ
     -> state_low_eq Γ m m.
-
 Proof.
   intros.
   apply state_low_eq_;auto.
@@ -204,12 +170,7 @@ Proof.
   apply var_low_eq_wf_refl with (ℓ := ℓ); auto.
 Qed.
 
-
-
-
-
 (* Relation between state and value low-equivalence *)
-
 Lemma vars_low_eq: forall Γ m1 m2 x u v ℓ, 
   Γ x = Some ℓ ->
   state_low_eq Γ m1 m2 ->
@@ -221,12 +182,10 @@ Proof.
   inversion H0; subst.
   specialize (H5 x ℓ H).
   inversion H5; crush.
-
 Qed.
 
 
 (* Updating low-eq memories in a low-eq manner preserves low-equivalence *)
-
 Lemma leq_updates: 
   forall Γ ℓ x m s u v,
     state_low_eq Γ m s ->
@@ -333,14 +292,10 @@ Proof.
         repeat specialize_gen; auto.
       }
     }
-    
   }
 Qed.
 
 (* TODO: beautify the above prove! :(  2015-04-03 *)
-
-
-
 Lemma state_low_eq_trans_square:
                 forall Γ m s m' s',
                   state_low_eq Γ m s ->

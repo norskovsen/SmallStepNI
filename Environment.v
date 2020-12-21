@@ -43,5 +43,5 @@ Theorem update_permute {X: Type} : forall (n1:X) (n2:X) x1 x2 x3 (st:Env),
   x2 <> x1 -> 
   (update_env (update_env st x2 n1) x1 n2) x3 = (update_env (update_env st x1 n2) x2 n1) x3.
 Proof.  
-  intros. unfold update_env.  repeat (destruct eq_id_dec; crush).
+  intros. unfold update_env. repeat (destruct eq_id_dec; crush).
 Qed.
